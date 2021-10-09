@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.web.dao.IdentifyDao">
+
+	<resultMap type="com.icia.web.model.IdentifyCell" id="ICResultMap">
+		<id column="IC_USERCELL" property="cell"/>
+		<result column="IC_NUMBER" property="randomNumber" />
+	</resultMap>
+
+	<select id="cellSelect" parameterType="String" resultMap="ICResultMap">
+	SELECT
+	    NVL(IC_USERCELL,'') AS IC_USERCELL,
+	    NVL(IC_NUMBER, '') AS IC_NUMBER 
+	FROM
+    	"IC_CELL"
+	WHERE
+    	IC_USERCELL = #{value}
+	</select>
+
+	<insert id="cellInsert" parameterType="com.icia.web.model.IdentifyCell">
+	INSERT INTO "IC_CELL" 
+	(
+    	IC_USERCELL,
+    	IC_NUMBER
+	) 
+	VALUES 
+	(
+    	#{cell},
+    	#{randomNumber}
+	)
+	</insert>
+
+	<delete id="cellDelete" parameterType="string">	
+	DELETE 
+		FROM 
+			"IC_CELL"
+		WHERE
+		IC_USERCELL = #{value}
+	</delete>
+	<update id="cellUpdate" parameterType="com.icia.web.model.IdentifyCell">
+	UPDATE IC_CELL
+SET
+   IC_NUMBER = #{randomNumber}
+WHERE
+ 	IC_USERCELL = #{cell}
+	</update>
+	
+</mapper>
+

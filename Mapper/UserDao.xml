@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.web.dao.UserDao">
+
+<resultMap type="com.icia.web.model.User" id="userResultMap">
+	<id column="USER_ID"  property="userId"/>
+	<result column="USER_CELL" property="userCell" />
+	<result column="USER_PWD" property="userPwd" />
+	<result column="USER_NAME" property="userName"/>
+	<result column="USER_EMAIL" property="userEmail" />
+	<result column="USER_STATUS" property="status" />
+	<result column="REG_DATE" property="regDate" />
+	<result column="USER_POINT" property="point" />		
+</resultMap>
+<select id="userSelect" parameterType="string" resultMap="userResultMap">
+SELECT
+    USER_ID,
+    NVL(USER_PWD,'') AS USER_PWD,
+    NVL(USER_CELL,'000-0000-0000') AS USER_CELL,
+    NVL(USER_EMAIL,'') AS USER_EMAIL,
+    NVL(USER_NAME,'') AS USER_NAME,
+    NVL(TO_CHAR(REG_DATE,'YYYY.MM.DD HH24:MI:SS'),'') AS REG_DATE,
+    NVL(USER_STATUS,'N') AS USER_STATUS,
+    NVL(USER_POINT,0) AS USER_POINT
+FROM
+    "USER"
+WHERE
+    USER_ID = #{value}
+</select>
+
+
+<insert id="userInsert" parameterType="com.icia.web.model.User">
+INSERT INTO "USER" (
+    USER_ID,
+    USER_PWD,
+    USER_CELL,
+    USER_EMAIL,
+    USER_NAME,
+    REG_DATE,
+    USER_STATUS,
+    USER_POINT
+) VALUES (
+    #{userId},
+    #{userPwd},
+    #{userCell},
+    #{userEmail},
+    #{userName},
+    SYSDATE,
+    #{status},
+    0
+)
+</insert>
+<update id="userUpdate" parameterType="com.icia.web.model.User">
+UPDATE "USER"
+SET
+    USER_PWD = #{userPwd},
+    USER_NAME = #{userName},
+    USER_EMAIL = #{userEmail},
+    USER_CELL = #{userCell}
+WHERE
+        USER_ID = #{userId}
+</update>
+
+<select id="userSelectByEmail" parameterType="string" resultMap="userResultMap">
+SELECT
+    USER_ID,
+    NVL(USER_PWD,'') AS USER_PWD,
+    NVL(USER_CELL,'000-0000-0000') AS USER_CELL,
+    NVL(USER_EMAIL,'') AS USER_EMAIL,
+    NVL(USER_NAME,'') AS USER_NAME,
+    NVL(TO_CHAR(REG_DATE,'YYYY.MM.DD HH24:MI:SS'),'') AS REG_DATE,
+    NVL(USER_STATUS,'N') AS USER_STATUS,
+    NVL(USER_POINT,0) AS USER_POINT
+FROM
+    "USER"
+WHERE
+    USER_EMAIL = #{value}
+</select>
+
+<select id="nameCheck" parameterType="String" resultMap="userResultMap">
+SELECT
+    USER_ID,
+    NVL(USER_PWD,'') AS USER_PWD,
+    NVL(USER_CELL,'000-0000-0000') AS USER_CELL,
+    NVL(USER_EMAIL,'') AS USER_EMAIL,
+    NVL(USER_NAME,'') AS USER_NAME,
+    NVL(TO_CHAR(REG_DATE,'YYYY.MM.DD HH24:MI:SS'),'') AS REG_DATE,
+    NVL(USER_STATUS,'N') AS USER_STATUS,
+    NVL(USER_POINT,0) AS USER_POINT
+FROM
+    "USER"
+WHERE
+    USER_NAME = #{value}
+</select>
+
+</mapper>
+
